@@ -216,23 +216,25 @@ function getDayOfWeek(date) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// GEMINI API CALL (shared helper)
+// ANTHROPIC API CALL (shared helper)
 // ─────────────────────────────────────────────────────────────
-async function callGemini(prompt) {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 1000, temperature: 0.9 },
-      }),
-    }
-  );
+async function callClaude(prompt) {
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1000,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
   const data = await response.json();
-  if (data.error) throw new Error(`Gemini error: ${data.error.message}`);
-  return data.candidates[0].content.parts[0].text;
+  if (data.error) throw new Error(`Anthropic error: ${data.error.message}`);
+  return data.content[0].text;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -262,7 +264,7 @@ Write a letter from future Albina (Day 76 version) to present-day Albina:
 
 Return ONLY the letter. No labels or headers.`;
 
-  return callGemini(prompt);
+  return callClaude(prompt);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -294,7 +296,7 @@ Generate exactly 4 daily to-do items for today (${dayOfWeek}, Day ${dayNum}). Ru
 Return ONLY a valid JSON array of exactly 4 strings. No explanation, no markdown, no backticks. Example format:
 ["Task one here", "Task two here", "Task three here", "Task four here"]`;
 
-  const raw = await callGemini(prompt);
+  const raw = await callClaude(prompt);
 
   // Clean and parse JSON safely
   const cleaned = raw.replace(/```json|```/g, "").trim();
