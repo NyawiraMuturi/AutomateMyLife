@@ -1,0 +1,27 @@
+name: 75-Day Challenge Morning Brief
+
+on:
+  schedule:
+    # 7:30 AM EAT = 4:30 AM UTC, Mon-Sat (no Sunday)
+    - cron: "30 4 * * 1-6"
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  send-morning-brief:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Send Morning Brief
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: node send-morning-brief.js
