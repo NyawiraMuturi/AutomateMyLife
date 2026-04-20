@@ -450,7 +450,7 @@ function buildEmailHtml({ letter, todos, song, weekData, monthData, dayNum, week
 async function main() {
   const toEmail = process.env.TO_EMAIL;
   if (!toEmail) throw new Error("TO_EMAIL environment variable is required");
-  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is required");
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is required");
   if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY is required");
 
   const today = new Date();
