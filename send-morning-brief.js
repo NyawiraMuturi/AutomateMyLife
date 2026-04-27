@@ -3,7 +3,7 @@
 // Albina Nyawira Muturi
 // ─────────────────────────────────────────────────────────────
 
-const CHALLENGE_START = new Date("2026-04-21");
+const CHALLENGE_START = new Date("2026-04-18");
 const USER_NAME = "Albina";
 
 // ─────────────────────────────────────────────────────────────
@@ -350,93 +350,95 @@ function buildEmailHtml({ letter, todos, song, weekData, monthData, dayNum, week
 
   const todosHtml = todos.map((task, i) => `
     <tr>
-      <td style="padding:12px 0;border-bottom:1px solid #f0ebe3;">
+      <td style="padding:12px 0;border-bottom:1px solid rgba(115,162,172,0.2);">
         <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
-          <td style="width:28px;height:28px;background:#f5ede0;border-radius:50%;text-align:center;vertical-align:middle;font-size:11px;color:#b8892a;font-weight:700;flex-shrink:0;">${i + 1}</td>
-          <td style="padding-left:14px;font-size:14px;color:#4a4035;line-height:1.6;">${task}</td>
+          <td style="width:28px;height:28px;border:1.5px solid #73A2AC;border-radius:50%;text-align:center;vertical-align:middle;font-size:11px;color:#73A2AC;font-weight:400;flex-shrink:0;">${i + 1}</td>
+          <td style="padding-left:14px;font-size:14px;color:#1a1a1a;line-height:1.6;">${task}</td>
         </tr></table>
       </td>
     </tr>`).join("");
 
   const miniGoalsHtml = weekData.miniGoals
-    .map(mg => `<tr><td style="padding:6px 0;font-size:13px;color:#9a8e80;">→ ${mg}</td></tr>`)
+    .map(mg => `<tr><td style="padding:6px 0;font-size:12px;color:#444444;">→ ${mg}</td></tr>`)
     .join("");
 
   const letterHtml = letter
     .split("\n\n")
-    .map(p => `<p style="margin:0 0 16px 0;font-size:15px;line-height:1.85;color:#5a4e42;font-style:italic;">${p.trim()}</p>`)
+    .map(p => `<p style="margin:0 0 16px 0;font-size:14px;line-height:1.85;color:#1a1a1a;font-style:italic;">${p.trim()}</p>`)
     .join("");
 
   return `<!DOCTYPE html><html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#f7f3ee;font-family:Georgia,'Times New Roman',serif;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f7f3ee;padding:40px 16px;">
+<body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,'Times New Roman',serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0eb;padding:40px 16px;">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
   <!-- HEADER -->
-  <tr><td style="background:#1a1410;border-radius:16px 16px 0 0;padding:40px 48px;text-align:center;">
-    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;">75-Day Challenge · Day ${dayNum} of 75</p>
-    <h1 style="margin:0 0 6px 0;font-size:32px;font-weight:400;color:#f0e8d8;font-style:italic;">Your Morning Brief</h1>
-    <p style="margin:0;font-size:13px;color:#7a6e62;">${dateStr}</p>
-    <p style="margin:12px 0 0 0;font-size:11px;color:#c9a96e;font-style:italic;">Week ${weekNum} of 10 · Month ${monthNum}: ${monthData.theme}</p>
-    <p style="margin:6px 0 0 0;font-size:11px;color:#7a6e62;font-style:italic;">${weekData.theme}</p>
+  <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-radius:16px 16px 0 0;padding:40px 48px;text-align:center;">
+    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#0B5D69;">75-Day Challenge · Day ${dayNum} of 75</p>
+    <h1 style="margin:0 0 6px 0;font-size:32px;font-weight:400;color:#0B5D69;font-style:italic;">Your Morning Brief</h1>
+    <p style="margin:0;font-size:13px;color:#73A2AC;letter-spacing:0.05em;">${dateStr}</p>
+    <p style="margin:10px 0 0 0;font-size:11px;color:#73A2AC;font-style:italic;">Week ${weekNum} of 10 · Month ${monthNum}: ${monthData.theme}</p>
+    <p style="margin:4px 0 0 0;font-size:11px;color:#73A2AC;font-style:italic;">${weekData.theme}</p>
   </td></tr>
 
   <!-- PROGRESS BAR -->
-  <tr><td style="background:#1a1410;padding:0 48px 32px 48px;">
+  <tr><td style="background:#ffffff;border-left:1.5px solid #0B5D69;border-right:1.5px solid #0B5D69;padding:16px 48px 24px;">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td style="font-size:10px;color:#7a6e62;text-transform:uppercase;letter-spacing:0.1em;padding-bottom:8px;">Overall Progress</td>
-      <td align="right" style="font-size:10px;color:#c9a96e;padding-bottom:8px;">${progress}% complete</td>
+      <td style="font-size:10px;color:#FBAA82;text-transform:uppercase;letter-spacing:0.1em;padding-bottom:8px;">Overall Progress</td>
+      <td align="right" style="font-size:10px;color:#FBAA82;padding-bottom:8px;">${progress}% complete</td>
     </tr></table>
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td style="background:#2e2820;border-radius:2px;height:4px;">
-        <div style="background:linear-gradient(90deg,#c9a96e,#e8c98e);height:4px;width:${progress}%;border-radius:2px;"></div>
+      <td style="background:rgba(251,170,130,0.15);border-radius:2px;height:3px;">
+        <div style="background:#FBAA82;height:3px;width:${progress}%;border-radius:2px;"></div>
       </td>
     </tr></table>
   </td></tr>
 
   <!-- MONTHLY GOAL -->
-  <tr><td style="background:#2a2018;padding:20px 48px;">
-    <p style="margin:0 0 8px 0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a96e;">🎯 Month ${monthNum} Goal</p>
-    <p style="margin:0;font-size:13px;color:#a89880;line-height:1.7;font-style:italic;">${monthData.goal}</p>
+  <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:20px 48px;">
+    <p style="margin:0 0 8px 0;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#73A2AC;">Month ${monthNum} Goal</p>
+    <p style="margin:0;font-size:13px;color:#0B5D69;line-height:1.7;font-style:italic;">${monthData.goal}</p>
   </td></tr>
 
   <!-- LETTER -->
-  <tr><td style="background:#ffffff;padding:40px 48px;">
-    <p style="margin:0 0 20px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;">💌 A Letter From Future You</p>
-    <div style="border-left:3px solid #f0e0c0;padding-left:20px;">${letterHtml}</div>
+  <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:40px 48px;">
+    <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">A letter from future you</p>
+    <div style="border-left:2px solid #FBAA82;padding-left:20px;">${letterHtml}</div>
   </td></tr>
 
   <!-- DAILY TO-DOS -->
-  <tr><td style="background:#faf7f3;padding:32px 48px;">
-    <p style="margin:0 0 6px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;">✅ Today's To-Do List</p>
-    <p style="margin:0 0 20px 0;font-size:12px;color:#b0a898;font-style:italic;">4 manageable tasks to move you forward today</p>
+  <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:32px 48px;">
+    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#73A2AC;">Today's To-Do List</p>
+    <p style="margin:0 0 20px 0;font-size:12px;color:#444444;font-style:italic;">4 tasks to move you forward today</p>
     <table width="100%" cellpadding="0" cellspacing="0">${todosHtml}</table>
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;padding-top:20px;border-top:1px solid #ede8e0;">
-      <tr><td style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a96e;padding-bottom:10px;">This Week's Mini-Goals</td></tr>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;padding-top:20px;border-top:0.5px solid rgba(115,162,172,0.25);">
+      <tr><td style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#73A2AC;padding-bottom:10px;">This Week's Mini-Goals</td></tr>
       ${miniGoalsHtml}
     </table>
   </td></tr>
 
   <!-- SONG -->
-  <tr><td style="background:#ffffff;padding:32px 48px;">
-    <p style="margin:0 0 20px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;">🎵 Today's Song</p>
+  <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:32px 48px;">
+    <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">Today's Song</p>
     <table cellpadding="0" cellspacing="0"><tr>
-      <td style="width:52px;height:52px;background:linear-gradient(135deg,#c9a96e,#8b6914);border-radius:50%;text-align:center;vertical-align:middle;font-size:22px;">♪</td>
+      <td style="width:48px;height:48px;border:1.5px solid #FBAA82;border-radius:50%;text-align:center;vertical-align:middle;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3.5v9L13 8 6 3.5z" fill="#FBAA82"/></svg>
+      </td>
       <td style="padding-left:16px;">
-        <p style="margin:0 0 3px 0;font-size:17px;font-style:italic;color:#2a2018;font-weight:600;">"${song.title}"</p>
-        <p style="margin:0 0 4px 0;font-size:13px;color:#7a6e62;">${song.artist}</p>
-        <p style="margin:0;font-size:12px;color:#c9a96e;font-style:italic;">${song.vibe}</p>
+        <p style="margin:0 0 3px 0;font-size:17px;font-style:italic;color:#1a1a1a;font-weight:400;">"${song.title}"</p>
+        <p style="margin:0 0 4px 0;font-size:13px;color:#444444;">${song.artist}</p>
+        <p style="margin:0;font-size:11px;color:#FBAA82;font-style:italic;">${song.vibe}</p>
       </td>
     </tr></table>
-    <p style="margin:16px 0 0 0;font-size:12px;color:#b0a898;">Search it on Spotify or YouTube to start your morning right. 🎧</p>
+    <p style="margin:14px 0 0 0;font-size:12px;color:#444444;">Search it on Spotify or YouTube to start your morning right.</p>
   </td></tr>
 
   <!-- FOOTER -->
-  <tr><td style="background:#1a1410;border-radius:0 0 16px 16px;padding:28px 48px;text-align:center;">
-    <p style="margin:0 0 6px 0;font-size:13px;color:#c9a96e;font-style:italic;">Day ${dayNum} of 75. Week ${weekNum} of 10. You are doing it, ${USER_NAME}.</p>
-    <p style="margin:0;font-size:12px;color:#5a5048;">The woman you are becoming is worth every single morning. 🌱</p>
+  <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-top:none;border-radius:0 0 16px 16px;padding:28px 48px;text-align:center;">
+    <p style="margin:0 0 6px 0;font-size:13px;color:#0B5D69;font-style:italic;">Day ${dayNum} of 75. Week ${weekNum} of 10. You are doing it, ${USER_NAME}.</p>
+    <p style="margin:0;font-size:11px;color:#73A2AC;">The woman you are becoming is worth every single morning.</p>
   </td></tr>
 
 </table>
