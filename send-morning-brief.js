@@ -3,7 +3,7 @@
 // Albina Nyawira Muturi
 // ─────────────────────────────────────────────────────────────
 
-const CHALLENGE_START = new Date("2026-04-18");
+const CHALLENGE_START = new Date("2026-04-21");
 const USER_NAME = "Albina";
 
 // ─────────────────────────────────────────────────────────────
