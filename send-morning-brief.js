@@ -3,11 +3,11 @@
 // Albina Nyawira Muturi
 // May 18 – July 6, 2026
 // ─────────────────────────────────────────────────────────────
-
+ 
 const CHALLENGE_START = new Date("2026-05-18");
 const CHALLENGE_DAYS = 50;
 const USER_NAME = "Albina";
-
+ 
 // ─────────────────────────────────────────────────────────────
 // MONTHLY GOALS
 // Month 1: Days 1–30  (May 18 – Jun 16)
@@ -23,7 +23,7 @@ const MONTHLY_GOALS = {
     goal: "Turn the foundation into real output: host Soirée Event #1, publish masterclass landing page, land at least one freelance inquiry, submit Schengen visa application, and finish Germany-ready.",
   },
 };
-
+ 
 // ─────────────────────────────────────────────────────────────
 // WEEKLY FOCUS — 7 weeks covering all 50 days
 // Week 1: Days  1–7   | Month 1
@@ -134,7 +134,7 @@ const WEEKLY_FOCUS = {
     ],
   },
 };
-
+ 
 // ─────────────────────────────────────────────────────────────
 // SONGS (50 unique — one per day)
 // ─────────────────────────────────────────────────────────────
@@ -190,7 +190,7 @@ const SONGS = [
   { title: "Golden Hour", artist: "JVKE", vibe: "Warm and glowing — like this season of your life" },
   { title: "Golden", artist: "Jill Scott", vibe: "You made it. Walk in sunshine. 🌅" },
 ];
-
+ 
 // ─────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────
@@ -208,11 +208,11 @@ function getDayAndWeek(today) {
   const monthNum = WEEKLY_FOCUS[weekNum].month;
   return { dayNum, weekNum, monthNum };
 }
-
+ 
 function isSunday(today) {
   return today.getDay() === 0;
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // CLAUDE API CALL
 // ─────────────────────────────────────────────────────────────
@@ -234,13 +234,13 @@ async function callClaude(prompt) {
   if (data.error) throw new Error(`Anthropic error: ${data.error.message}`);
   return data.content[0].text;
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // GENERATE LETTER (weekdays)
 // ─────────────────────────────────────────────────────────────
-async function generateLetter(dayNum, weekNum, weekData, monthData) {
+async function generateLetter(dayNum, weekNum, monthNum, weekData, monthData) {
   return callClaude(`You are Albina Nyawira Muturi writing a short, warm, deeply personal letter to her past self on Day ${dayNum} of her 50-day challenge.
-
+ 
 Context about Albina:
 - Senior Full-Stack Engineer in Nairobi, Kenya building her path in AI education
 - Building: an AI masterclass, Dame-Techie brand (~13k followers), and Soirée events brand
@@ -251,7 +251,7 @@ Context about Albina:
 - This week: ${weekData.theme}
 - Mini-goals: "${weekData.miniGoals[0]}" and "${weekData.miniGoals[1]}"
 - Monthly goal: ${monthData.goal}
-
+ 
 Write a letter from future Albina (Day 51 version) to present-day Albina:
 - Warm, personal, intimate — not corporate
 - 3-4 short paragraphs
@@ -259,31 +259,31 @@ Write a letter from future Albina (Day 51 version) to present-day Albina:
 - End with one powerful sentence of encouragement
 - Tone: best friend who already made it through
 - Do NOT start with "I remember"
-
+ 
 Return ONLY the letter. No labels or headers.`);
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // GENERATE SUNDAY REFLECTION PROMPT
 // ─────────────────────────────────────────────────────────────
 async function generateSundayNote(dayNum, weekNum, weekData, monthData) {
   return callClaude(`You are writing a warm, gentle Sunday rest note for Albina Nyawira Muturi on Day ${dayNum} of her 50-day challenge.
-
+ 
 Context:
 - She is a Senior Full-Stack Engineer in Nairobi building an AI masterclass, Dame-Techie brand, and Soirée events
 - She is on Week ${weekNum} of 7, Month theme: "${monthData.theme}"
 - This week's focus was: ${weekData.theme}
 - She works hard all week and Sunday is her sacred rest day
-
+ 
 Write a short, cozy Sunday note (2-3 paragraphs) that:
 - Acknowledges the week she just had with warmth
 - Gently encourages her to rest, clean her space, and reset mentally
 - Ends with excitement and one thing to look forward to in the week ahead: "${weekData.miniGoals[0]}"
 - Tone: like a warm hug from a best friend
-
+ 
 Return ONLY the note text. No labels or headers.`);
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // SEND EMAIL VIA RESEND
 // ─────────────────────────────────────────────────────────────
@@ -305,7 +305,7 @@ async function sendEmail(subject, html, toEmail) {
   if (data.error) throw new Error(`Resend error: ${data.error.message}`);
   console.log("✅ Email sent! ID:", data.id);
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // BUILD SUNDAY EMAIL
 // ─────────────────────────────────────────────────────────────
@@ -314,14 +314,14 @@ function buildSundayHtml({ note, song, dayNum, weekNum, monthNum, monthData, wee
   const noteHtml = note.split("\n\n").map(p =>
     `<p style="margin:0 0 16px 0;font-size:14px;line-height:1.85;color:#1a1a1a;font-style:italic;">${p.trim()}</p>`
   ).join("");
-
+ 
   const sundayChecklist = [
     "Clean and reset your space 🧹",
     "Do something that genuinely relaxes you",
     "Prep your meals or plan your week ahead",
     "Reflect: what went well this week? What will you do differently?",
   ];
-
+ 
   const checklistHtml = sundayChecklist.map((item, i) => `
     <tr>
       <td style="padding:12px 0;border-bottom:1px solid rgba(115,162,172,0.2);">
@@ -331,14 +331,14 @@ function buildSundayHtml({ note, song, dayNum, weekNum, monthNum, monthData, wee
         </tr></table>
       </td>
     </tr>`).join("");
-
+ 
   return `<!DOCTYPE html><html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,'Times New Roman',serif;">
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0eb;padding:40px 16px;">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
-
+ 
   <!-- HEADER -->
   <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-radius:16px 16px 0 0;padding:40px 48px;text-align:center;">
     <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#0B5D69;">50-Day Challenge · Day ${dayNum}</p>
@@ -346,7 +346,7 @@ function buildSundayHtml({ note, song, dayNum, weekNum, monthNum, monthData, wee
     <p style="margin:0;font-size:13px;color:#73A2AC;letter-spacing:0.05em;">${dateStr}</p>
     <p style="margin:10px 0 0 0;font-size:11px;color:#73A2AC;font-style:italic;">Week ${weekNum} of 7 · Month ${monthNum}: ${monthData.theme}</p>
   </td></tr>
-
+ 
   <!-- PROGRESS BAR -->
   <tr><td style="background:#ffffff;border-left:1.5px solid #0B5D69;border-right:1.5px solid #0B5D69;padding:16px 48px 24px;">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
@@ -359,27 +359,27 @@ function buildSundayHtml({ note, song, dayNum, weekNum, monthNum, monthData, wee
       </td>
     </tr></table>
   </td></tr>
-
+ 
   <!-- SUNDAY NOTE -->
   <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:40px 48px;">
     <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">A note for your Sunday</p>
     <div style="border-left:2px solid #FBAA82;padding-left:20px;">${noteHtml}</div>
   </td></tr>
-
+ 
   <!-- SUNDAY CHECKLIST -->
   <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:32px 48px;">
     <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#73A2AC;">Your Sunday Checklist</p>
     <p style="margin:0 0 20px 0;font-size:12px;color:#444444;font-style:italic;">Rest is productive. This is part of the challenge.</p>
     <table width="100%" cellpadding="0" cellspacing="0">${checklistHtml}</table>
   </td></tr>
-
+ 
   <!-- LOOKING AHEAD -->
   <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:24px 48px;">
     <p style="margin:0 0 10px 0;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#73A2AC;">Coming Up This Week</p>
     <p style="margin:0 0 6px;font-size:13px;color:#1a1a1a;">→ ${weekData.miniGoals[0]}</p>
     <p style="margin:0;font-size:13px;color:#1a1a1a;">→ ${weekData.miniGoals[1]}</p>
   </td></tr>
-
+ 
   <!-- SONG -->
   <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:32px 48px;">
     <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">A Song for Your Sunday</p>
@@ -394,24 +394,24 @@ function buildSundayHtml({ note, song, dayNum, weekNum, monthNum, monthData, wee
       </td>
     </tr></table>
   </td></tr>
-
+ 
   <!-- FOOTER -->
   <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-top:none;border-radius:0 0 16px 16px;padding:28px 48px;text-align:center;">
     <p style="margin:0 0 6px 0;font-size:13px;color:#0B5D69;font-style:italic;">Rest well, ${USER_NAME}. You have earned every minute of today.</p>
     <p style="margin:0;font-size:11px;color:#73A2AC;">The woman you are becoming rests without guilt. 🌿</p>
   </td></tr>
-
+ 
 </table>
 </td></tr></table>
 </body></html>`;
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // BUILD WEEKDAY EMAIL
 // ─────────────────────────────────────────────────────────────
 function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, monthNum, dateStr }) {
   const progress = Math.round((dayNum / CHALLENGE_DAYS) * 100);
-
+ 
   const goalsHtml = weekData.coreGoals.map((g, i) => `
     <tr>
       <td style="padding:12px 0;border-bottom:1px solid rgba(115,162,172,0.2);">
@@ -421,22 +421,22 @@ function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, 
         </tr></table>
       </td>
     </tr>`).join("");
-
+ 
   const miniGoalsHtml = weekData.miniGoals.map(mg =>
     `<tr><td style="padding:6px 0;font-size:12px;color:#444444;">→ ${mg}</td></tr>`
   ).join("");
-
+ 
   const letterHtml = letter.split("\n\n").map(p =>
     `<p style="margin:0 0 16px 0;font-size:14px;line-height:1.85;color:#1a1a1a;font-style:italic;">${p.trim()}</p>`
   ).join("");
-
+ 
   return `<!DOCTYPE html><html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,'Times New Roman',serif;">
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0eb;padding:40px 16px;">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
-
+ 
   <!-- HEADER -->
   <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-radius:16px 16px 0 0;padding:40px 48px;text-align:center;">
     <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#0B5D69;">50-Day Challenge · Day ${dayNum} of 50</p>
@@ -445,7 +445,7 @@ function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, 
     <p style="margin:10px 0 0 0;font-size:11px;color:#73A2AC;font-style:italic;">Week ${weekNum} of 7 · Month ${monthNum}: ${monthData.theme}</p>
     <p style="margin:4px 0 0 0;font-size:11px;color:#73A2AC;font-style:italic;">${weekData.theme}</p>
   </td></tr>
-
+ 
   <!-- PROGRESS BAR -->
   <tr><td style="background:#ffffff;border-left:1.5px solid #0B5D69;border-right:1.5px solid #0B5D69;padding:16px 48px 24px;">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
@@ -458,19 +458,19 @@ function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, 
       </td>
     </tr></table>
   </td></tr>
-
+ 
   <!-- MONTHLY GOAL -->
   <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:20px 48px;">
     <p style="margin:0 0 8px 0;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#73A2AC;">Month ${monthNum} Goal</p>
     <p style="margin:0;font-size:13px;color:#0B5D69;line-height:1.7;font-style:italic;">${monthData.goal}</p>
   </td></tr>
-
+ 
   <!-- LETTER -->
   <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:40px 48px;">
     <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">A letter from future you</p>
     <div style="border-left:2px solid #FBAA82;padding-left:20px;">${letterHtml}</div>
   </td></tr>
-
+ 
   <!-- DAILY GOALS -->
   <tr><td style="background:#ffffff;border:1.5px solid #73A2AC;border-top:none;padding:32px 48px;">
     <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#73A2AC;">Your 4 Core Goals Today</p>
@@ -481,7 +481,7 @@ function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, 
       ${miniGoalsHtml}
     </table>
   </td></tr>
-
+ 
   <!-- SONG -->
   <tr><td style="background:#ffffff;border:1.5px solid #FBAA82;border-top:none;padding:32px 48px;">
     <p style="margin:0 0 18px 0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#FBAA82;">Today's Song</p>
@@ -497,18 +497,18 @@ function buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, 
     </tr></table>
     <p style="margin:14px 0 0 0;font-size:12px;color:#444444;">Search it on Spotify or YouTube to start your morning right.</p>
   </td></tr>
-
+ 
   <!-- FOOTER -->
   <tr><td style="background:#ffffff;border:1.5px solid #0B5D69;border-top:none;border-radius:0 0 16px 16px;padding:28px 48px;text-align:center;">
     <p style="margin:0 0 6px 0;font-size:13px;color:#0B5D69;font-style:italic;">Day ${dayNum} of 50. Week ${weekNum} of 7. You are doing it, ${USER_NAME}.</p>
     <p style="margin:0;font-size:11px;color:#73A2AC;">The woman you are becoming is worth every single morning. 🌱</p>
   </td></tr>
-
+ 
 </table>
 </td></tr></table>
 </body></html>`;
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // MAIN
 // ─────────────────────────────────────────────────────────────
@@ -517,7 +517,7 @@ async function main() {
   if (!toEmail) throw new Error("TO_EMAIL environment variable is required");
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is required");
   if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY is required");
-
+ 
   const today = new Date();
   const sunday = isSunday(today);
   const { dayNum, weekNum, monthNum } = getDayAndWeek(today);
@@ -527,9 +527,9 @@ async function main() {
   const dateStr = today.toLocaleDateString("en-KE", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
   });
-
+ 
   console.log(`📅 Day ${dayNum}/${CHALLENGE_DAYS} | Week ${weekNum}/7 | Month ${monthNum}/2 | ${sunday ? "Sunday 🌿" : "Weekday"}`);
-
+ 
   if (sunday) {
     console.log("☀️  Generating Sunday reset email...");
     const note = await generateSundayNote(dayNum, weekNum, weekData, monthData);
@@ -538,13 +538,13 @@ async function main() {
     await sendEmail(subject, html, toEmail);
   } else {
     console.log("🌅 Generating weekday morning brief...");
-    const letter = await generateLetter(dayNum, weekNum, weekData, monthData);
+    const letter = await generateLetter(dayNum, weekNum, monthNum, weekData, monthData);
     const html = buildWeekdayHtml({ letter, song, weekData, monthData, dayNum, weekNum, monthNum, dateStr });
     const subject = `🌅 Day ${dayNum}/50 — Your Morning Brief, ${USER_NAME}`;
     await sendEmail(subject, html, toEmail);
   }
 }
-
+ 
 main().catch((err) => {
   console.error("❌ Error:", err.message);
   process.exit(1);
